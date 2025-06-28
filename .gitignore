@@ -1,0 +1,4 @@
+e-commerce/
+.vscode/
+db.sqlite3
+.env

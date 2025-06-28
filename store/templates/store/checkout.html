@@ -1,0 +1,47 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 600px;">
+  <h2 class="text-center fw-bold mb-4">Checkout</h2>
+
+  {% if cart|length == 0 %}
+    <div class="alert alert-info text-center">
+      Your cart is empty. <a href="{% url 'home' %}">Continue shopping</a>
+    </div>
+  {% else %}
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      <div class="mb-3">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+        {% for error in form.name.errors %}
+          <div class="text-danger small">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <div class="mb-3">
+        {{ form.address.label_tag }}
+        {{ form.address }}
+        {% for error in form.address.errors %}
+          <div class="text-danger small">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <div class="mb-3">
+        {{ form.phone.label_tag }}
+        {{ form.phone }}
+        {% for error in form.phone.errors %}
+          <div class="text-danger small">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <div class="d-grid">
+        <button type="submit" class="btn btn-dark py-2">Confirm Order</button>
+      </div>
+    </form>
+  {% endif %}
+</div>
+{% endblock %}

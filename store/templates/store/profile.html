@@ -1,0 +1,39 @@
+{% extends 'store/base.html' %}
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container my-5" style="max-width: 700px;">
+  <h2 class="mb-4 text-center fw-bold">My Profile</h2>
+
+  <div class="card shadow-sm p-4">
+    <h4 class="mb-3">User Details</h4>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Full Name:</strong> {{ user.get_full_name }}</p>
+
+    {% if customer %}
+      <hr>
+      <h4 class="mb-3">Customer Info</h4>
+      <p><strong>Phone Number:</strong> {{ customer.phone_number }}</p>
+      <p><strong>Shipping Address:</strong> {{ customer.shipping_address }}</p>
+      <p><strong>Billing Address:</strong> {{ customer.billing_address }}</p>
+      <p><strong>Date of Birth:</strong> {{ customer.date_of_birth }}</p>
+    {% else %}
+      <div class="alert alert-warning mt-3">
+        Customer profile not set up.
+      </div>
+    {% endif %}
+
+    <!-- Stylish Logout Button -->
+    <form action="{% url 'logout' %}" method="post" class="text-end mt-4">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </button>
+      <button>
+      <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

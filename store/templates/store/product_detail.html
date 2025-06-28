@@ -1,0 +1,189 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ product.title }} - Lumi & So{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row g-5 align-items-start">
+
+    <!-- Product Image -->
+    <div class="col-md-6 text-center">
+      <div id="magnify-container">
+        <a href="{{ product.image.url }}" data-magnify="gallery" data-caption="{{ product.title }}">
+          <img
+            id="mainImage"
+            src="{{ product.image.url }}"
+            class="img-fluid rounded shadow"
+            alt="{{ product.title }}"
+          />
+        </a>
+      </div>
+
+      <!-- Thumbnails -->
+      <div class="d-flex gap-2 mt-3 justify-content-center">
+        <img src="{{ product.image.url }}" class="img-thumbnail" width="60" onclick="changeImage(this)">
+        {% for img in product.images.all %}
+          <img src="{{ img.image.url }}" class="img-thumbnail" width="60" onclick="changeImage(this)">
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="col-md-6">
+      <h2 class="fw-bold">{{ product.title|upper }}</h2>
+
+      <!-- Price -->
+      <div class="mb-3">
+        <span class="text-danger fs-4 fw-bold">Rs. {{ product.price }}</span>
+        <del class="text-muted fs-6 ms-2">Rs. {{ product.price|add:500 }}</del>
+      </div>
+
+      <!-- Form Start -->
+      <form method="post" action="{% url 'add_to_cart' product.id %}">
+        {% csrf_token %}
+
+        <!-- Size Selection -->
+        <div class="mb-3">
+          <label for="selected_size" class="fw-semibold">Select Size:</label>
+          <select name="selected_size" id="selected_size" class="form-select mt-1" required>
+            {% for size in product.available_sizes %}
+              <option value="{{ size }}">{{ size }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Quantity Selection -->
+        <div class="d-flex align-items-center mb-3">
+          <label class="me-3 fw-semibold">Quantity:</label>
+          <div class="input-group" style="width: 120px;">
+            <button class="btn btn-outline-secondary" type="button" onclick="changeQty(-1)">−</button>
+            <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control text-center">
+            <button class="btn btn-outline-secondary" type="button" onclick="changeQty(1)">+</button>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        {% if user.is_authenticated %}
+          <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-outline-danger mb-3">Add to Wishlist</a>
+        {% endif %}
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-dark">Add to Cart</button>
+          <button type="submit" class="btn btn-outline-dark">Buy it now</button>
+        </div>
+      </form>
+
+      <!-- Quantity Control Script -->
+      <script>
+        function changeQty(amount) {
+          const qty = document.getElementById('quantity');
+          let current = parseInt(qty.value);
+          if (!isNaN(current)) {
+            qty.value = Math.max(1, current + amount);
+          }
+        }
+      </script>
+    </div>
+  </div>
+
+  <!-- ⭐ Customer Reviews Section -->
+  <hr class="mt-5">
+
+  <h4>Customer Reviews</h4>
+
+  {% if reviews %}
+    {% for review in reviews %}
+      <div class="mb-3 border-bottom pb-2">
+        <strong>{{ review.user.username }}</strong> –
+        <span class="text-warning">
+          {% for i in "12345"|slice:":review.rating"|make_list %}
+            ★
+          {% endfor %}
+        </span>
+        <br>
+        <small class="text-muted">{{ review.created_at|date:"F j, Y" }}</small>
+        <p>{{ review.comment }}</p>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-muted">No reviews yet.</p>
+  {% endif %}
+
+  {% if user.is_authenticated %}
+    <div class="mt-4">
+      <h5>Leave a Review</h5>
+      <form method="post">
+        {% csrf_token %}
+        {{ review_form.as_p }}
+        <button type="submit" class="btn btn-dark">Submit Review</button>
+      </form>
+    </div>
+  {% else %}
+    <p><a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to write a review.</p>
+  {% endif %}
+
+  <!-- Related Products Section -->
+  {% if related_products %}
+  <div class="mt-5">
+    <h4 class="mb-4">You May Also Like</h4>
+    <div class="row">
+      {% for related in related_products %}
+        <div class="col-md-3 col-6 mb-4">
+          <div class="card h-100 shadow-sm">
+            <img src="{{ related.image.url }}" class="card-img-top" alt="{{ related.title }}">
+            <div class="card-body">
+              <h6 class="card-title">{{ related.title|truncatechars:40 }}</h6>
+              <p class="text-muted mb-1">Rs. {{ related.price }}</p>
+              <a href="{% url 'product_detail' related.id %}" class="btn btn-sm btn-outline-primary">View</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  {% if recently_viewed_products %}
+  <div class="mt-5">
+    <h4 class="mb-4">Recently Viewed</h4>
+    <div class="row">
+      {% for viewed in recently_viewed_products %}
+        <div class="col-md-3 col-6 mb-4">
+          <div class="card h-100 shadow-sm">
+            <img src="{{ viewed.image.url }}" class="card-img-top" alt="{{ viewed.title }}">
+            <div class="card-body">
+              <h6 class="card-title">{{ viewed.title|truncatechars:40 }}</h6>
+              <p class="text-muted mb-1">Rs. {{ viewed.price }}</p>
+              <a href="{% url 'product_detail' viewed.id %}" class="btn btn-sm btn-outline-secondary">View Again</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+</div>
+
+<!-- JS for Magnify -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnify/dist/css/magnify.min.css">
+<script src="https://cdn.jsdelivr.net/npm/magnify/dist/js/jquery.magnify.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $('[data-magnify]').magnify();
+  });
+
+  function changeImage(img) {
+    $('#magnify-container').html(`
+      <a href="${img.src}" data-magnify="gallery" data-caption="{{ product.title }}">
+        <img
+          id="mainImage"
+          src="${img.src}"
+          class="img-fluid rounded shadow"
+          alt="{{ product.title }}"
+        />
+      </a>
+    `);
+    $('[data-magnify]').magnify();
+  }
+</script>
+{% endblock %}
