@@ -3,12 +3,33 @@
 {% block title %}{{ subcategory.name }} - Lumi & So{% endblock %}
 
 {% block content %}
-  <h2 class="mb-4 text-center">{{ subcategory.name }}</h2>
+   {% include 'store/partials/breadcrumb.html' %}
+  <!-- Title and Sort Bar -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">{{ subcategory.name }}</h2>
+
+    <!-- Sorting Form -->
+    <form method="get" class="d-flex align-items-center gap-2">
+      {% for val in selected_availability %}
+        <input type="hidden" name="availability" value="{{ val }}">
+      {% endfor %}
+      <input type="hidden" name="min_price" value="{{ min_price }}">
+      <input type="hidden" name="max_price" value="{{ max_price }}">
+
+      <label for="sort" class="me-2 fw-semibold">Sort by:</label>
+      <select name="sort" id="sort" class="form-select w-auto" onchange="this.form.submit()">
+        <option value="">Default</option>
+        <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Newest</option>
+        <option value="low" {% if selected_sort == 'low' %}selected{% endif %}>Price: Low to High</option>
+        <option value="high" {% if selected_sort == 'high' %}selected{% endif %}>Price: High to Low</option>
+      </select>
+    </form>
+  </div>
 
   <div class="row">
     <!-- Filters Sidebar -->
     <div class="col-md-3">
-      <h5>Filters</h5>
+      <h5 class="p-2 bg-light rounded shadow-sm">Filters</h5>
       <form method="get">
         <!-- Availability -->
         <div class="mb-3">
@@ -39,7 +60,7 @@
         <button type="submit" class="btn btn-dark mt-2">Apply Filters</button>
       </form>
     </div>
-
+    
     <!-- Product Grid -->
     <div class="col-md-9">
       <div class="row">
@@ -66,19 +87,19 @@
         <ul class="pagination justify-content-center">
           {% if page_obj.has_previous %}
             <li class="page-item">
-              <a class="paage-link" href="?{% if selected_availability %}{{ selected_availability|join:'&availability=' }}&{% endif %}min_price={{ min_price }}&max_price={{ max_price }}&page={{ page_obj.previous_page_number }}">Previous</a>
+              <a class="page-link" href="?{% if selected_availability %}{{ selected_availability|join:'&availability=' }}&{% endif %}min_price={{ min_price }}&max_price={{ max_price }}&sort={{ selected_sort }}&page={{ page_obj.previous_page_number }}">Previous</a>
             </li>
           {% endif %}
 
           {% for num in page_obj.paginator.page_range %}
             <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-              <a class="page-link" href="?{% if selected_availability %}{{ selected_availability|join:'&availability=' }}&{% endif %}min_price={{ min_price }}&max_price={{ max_price }}&page={{ num }}">{{ num }}</a>
+              <a class="page-link" href="?{% if selected_availability %}{{ selected_availability|join:'&availability=' }}&{% endif %}min_price={{ min_price }}&max_price={{ max_price }}&sort={{ selected_sort }}&page={{ num }}">{{ num }}</a>
             </li>
           {% endfor %}
 
           {% if page_obj.has_next %}
             <li class="page-item">
-              <a class="page-link" href="?{% if selected_availability %}{{ selected_availability|join:'&availability=' }}&{% endif %}min_price={{ min_price }}&max_price={{ max_price }}&page={{ page_obj.next_page_number }}">Next</a>
+              <a class="page-link" href="?{% if selected_availability %}{{ selected_availability|join:'&availability=' }}&{% endif %}min_price={{ min_price }}&max_price={{ max_price }}&sort={{ selected_sort }}&page={{ page_obj.next_page_number }}">Next</a>
             </li>
           {% endif %}
         </ul>

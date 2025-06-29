@@ -1,7 +1,9 @@
 {% extends 'store/base.html' %}
 {% block title %}{{ product.title }} - Lumi & So{% endblock %}
+{% load form_tags %}
 
 {% block content %}
+   {% include 'store/partials/breadcrumb.html' %}
 <div class="container my-5">
   <div class="row g-5 align-items-start">
 
@@ -84,41 +86,64 @@
     </div>
   </div>
 
-  <!-- ⭐ Customer Reviews Section -->
-  <hr class="mt-5">
+<!-- ⭐ Customer Reviews Section -->
+<hr class="mt-5">
+<h4 class="mt-5 mb-4">Customer Reviews</h4>
 
-  <h4>Customer Reviews</h4>
-
-  {% if reviews %}
+{% if reviews %}
+  <div class="list-group mb-4">
     {% for review in reviews %}
-      <div class="mb-3 border-bottom pb-2">
-        <strong>{{ review.user.username }}</strong> –
-        <span class="text-warning">
+      <div class="list-group-item">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="fw-semibold">{{ review.user.username }}</div>
+
+          <!-- Sentiment Indicator -->
+          {% if review.sentiment == "Positive" %}
+            <span class="badge bg-success rounded-circle" style="width: 12px; height: 12px;"></span>
+          {% elif review.sentiment == "Negative" %}
+            <span class="badge bg-danger rounded-circle" style="width: 12px; height: 12px;"></span>
+          {% else %}
+            <span class="badge bg-secondary rounded-circle" style="width: 12px; height: 12px;"></span>
+          {% endif %}
+        </div>
+
+        <!-- Rating Stars -->
+        <div class="text-warning mt-1">
           {% for i in "12345"|slice:":review.rating"|make_list %}
             ★
           {% endfor %}
-        </span>
-        <br>
+        </div>
+
         <small class="text-muted">{{ review.created_at|date:"F j, Y" }}</small>
-        <p>{{ review.comment }}</p>
+        <p class="mt-2 mb-0">{{ review.comment }}</p>
       </div>
     {% endfor %}
-  {% else %}
-    <p class="text-muted">No reviews yet.</p>
-  {% endif %}
+  </div>
+{% else %}
+  <p class="text-muted">No reviews yet.</p>
+{% endif %}
 
-  {% if user.is_authenticated %}
-    <div class="mt-4">
-      <h5>Leave a Review</h5>
-      <form method="post">
-        {% csrf_token %}
-        {{ review_form.as_p }}
-        <button type="submit" class="btn btn-dark">Submit Review</button>
-      </form>
-    </div>
-  {% else %}
-    <p><a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to write a review.</p>
-  {% endif %}
+{% if user.is_authenticated %}
+  <div class="mt-4 p-4 bg-light rounded shadow-sm">
+    <h5 class="mb-3">Leave a Review</h5>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        {{ review_form.comment.label_tag }}
+        {{ review_form.comment|add_class:"form-control" }}
+      </div>
+      <div class="mb-3">
+        {{ review_form.rating.label_tag }}
+        {{ review_form.rating|add_class:"form-select w-auto" }}
+      </div>
+      <button type="submit" class="btn btn-dark">Submit Review</button>
+    </form>
+  </div>
+{% else %}
+  <p><a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to write a review.</p>
+{% endif %}
+
+
 
   <!-- Related Products Section -->
   {% if related_products %}

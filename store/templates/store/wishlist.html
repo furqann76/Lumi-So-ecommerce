@@ -2,6 +2,7 @@
 {% block title %}My Wishlist{% endblock %}
 
 {% block content %}
+   {% include 'store/partials/breadcrumb.html' %}
 <div class="container py-5">
   <h2 class="fw-bold mb-4">My Wishlist</h2>
   {% if wishlist %}

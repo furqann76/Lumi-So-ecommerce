@@ -83,7 +83,9 @@
         <ul class="navbar-nav gap-3">
           <form class="d-flex ms-auto" method="get" action="{% url 'search_products' %}">
             <input class="form-control me-2" type="search" placeholder="Search products..." name="q" required>
-            <button class="btn btn-outline-primary" type="submit">Search</button>
+            <button class="btn btn-outline-dark" type="submit">
+              <i class="bi bi-search fs-6"></i>
+            </button>
           </form>
           {% for category in nav_categories %}
             {% if category.subcategories.all %}
