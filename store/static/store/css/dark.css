@@ -1,0 +1,74 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.top-bar {
+    background-color: #000000;
+    color: white;
+    font-size: 0.9rem;
+    padding: 4px 0;
+    text-align: center;
+}
+
+.announcement-bar {
+    background-color: rgb(0, 13, 255);
+    color: white;
+    font-weight: 500;
+    text-align: center;
+    padding: 6px 0;
+}
+
+.navbar {
+    padding: 1rem;
+    background-color: #000000;
+    color: rgb(0, 0, 0);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: rgb(0, 0, 0);
+}
+
+.hero {
+    background: url('/static/store/AdobeStock_314970095_Preview.jpeg') no-repeat center center/cover;
+    min-height: 90vh;
+    color: rgb(0, 0, 0);
+    position: relative;
+}
+
+.hero-overlay {
+    background-color: rgba(0, 0, 0, 0.55);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding-top: 30vh;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: #ccc;
+}
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.products div {
+    width: 200px;
+    margin-right: 20px;
+}

@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from .models import (
     Product,
     Category,
@@ -10,6 +10,30 @@ from .models import (
     ProductImage,
 )
 from .utils import generate_product_description
+from .models.theme import SiteTheme
+
+
+@admin.action(description="Activate selected theme (only one at a time)")
+def activate_theme(modeladmin, request, queryset):
+    if queryset.count() != 1:
+        messages.error(request, "Please select exactly one theme to activate.")
+        return
+
+    # Deactivate all themes first
+    SiteTheme.objects.update(is_active=False)
+
+    # Activate selected theme
+    selected = queryset.first()
+    selected.is_active = True
+    selected.save()
+
+    messages.success(request, f"'{selected.name}' theme has been activated.")
+
+
+@admin.register(SiteTheme)
+class SiteThemeAdmin(admin.ModelAdmin):
+    list_display = ["name", "is_active", "updated_at"]
+    actions = [activate_theme]
 
 
 class ProductImageInline(admin.TabularInline):

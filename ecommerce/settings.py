@@ -78,6 +78,10 @@ TEMPLATES = [
     },
 ]
 
+TEMPLATES[0]["OPTIONS"]["context_processors"] += [
+    "store.context_processors.current_theme",
+]
+
 WSGI_APPLICATION = "ecommerce.wsgi.application"
 
 
