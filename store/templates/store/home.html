@@ -22,8 +22,16 @@
         <div class="card">
           <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.title }}" />
           <div class="card-body">
+            {% if product.is_on_sale %}
+              <span class="badge bg-danger">{{ product.discount_percentage }}% OFF</span>
+            {% endif %}
             <h5 class="card-title">{{ product.title }}</h5>
-            <p class="card-text">Rs. {{ product.price }}</p>
+            {% if product.is_on_sale %}
+              <span class="text-danger fw-bold">Rs. {{ product.sale_price }}</span>
+              <del class="text-muted ms-2">Rs. {{ product.price }}</del>
+            {% else %}
+              <span class="fw-bold">Rs. {{ product.price }}</span>
+            {% endif %}
             <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-dark w-100">View</a>
           </div>
         </div>

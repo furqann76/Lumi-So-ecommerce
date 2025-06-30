@@ -32,12 +32,17 @@
     <!-- Product Info -->
     <div class="col-md-6">
       <h2 class="fw-bold">{{ product.title|upper }}</h2>
+      {% if product.is_on_sale %}
+        <span class="badge bg-danger">{{ product.discount_percentage }}% OFF</span>
+      {% endif %}
 
       <!-- Price -->
-      <div class="mb-3">
-        <span class="text-danger fs-4 fw-bold">Rs. {{ product.price }}</span>
-        <del class="text-muted fs-6 ms-2">Rs. {{ product.price|add:500 }}</del>
-      </div>
+      {% if product.is_on_sale %}
+        <span class="text-danger fw-bold">Rs. {{ product.sale_price }}</span>
+        <del class="text-muted ms-2">Rs. {{ product.price }}</del>
+      {% else %}
+        <span class="fw-bold">Rs. {{ product.price }}</span>
+      {% endif %}
 
       <!-- Form Start -->
       <form method="post" action="{% url 'add_to_cart' product.id %}">

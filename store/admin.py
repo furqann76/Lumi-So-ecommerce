@@ -18,6 +18,8 @@ class ProductImageInline(admin.TabularInline):
 
 class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImageInline]
+    list_display = ("title", "price", "sale_price", "is_on_sale")
+    list_filter = ("sale_price",)
 
 
 class SubCategoryInline(admin.TabularInline):

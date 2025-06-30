@@ -17,6 +17,20 @@ class Product(models.Model):
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     available_sizes = models.JSONField(default=list)
     stock = models.PositiveIntegerField(default=10)  # 👈 Add this line
+    sale_price = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True
+    )
+
+    def is_on_sale(self):
+        return self.sale_price is not None and self.sale_price < self.price
+
+    def get_display_price(self):
+        return self.sale_price if self.is_on_sale() else self.price
+
+    def discount_percentage(self):
+        if self.is_on_sale():
+            return round(100 - (self.sale_price / self.price * 100))
+        return 0
 
     def is_in_stock(self):
         return self.stock > 0
