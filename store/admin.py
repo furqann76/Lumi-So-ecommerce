@@ -9,6 +9,7 @@ from .models import (
     Wishlist,
     ProductImage,
 )
+from .utils import generate_product_description
 
 
 class ProductImageInline(admin.TabularInline):
@@ -20,6 +21,11 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImageInline]
     list_display = ("title", "price", "sale_price", "is_on_sale")
     list_filter = ("sale_price",)
+
+    def save_model(self, request, obj, form, change):
+        if not obj.description:
+            obj.description = generate_product_description(obj.title)
+        super().save_model(request, obj, form, change)
 
 
 class SubCategoryInline(admin.TabularInline):

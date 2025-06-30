@@ -11,12 +11,7 @@
     <div class="col-md-6 text-center">
       <div id="magnify-container">
         <a href="{{ product.image.url }}" data-magnify="gallery" data-caption="{{ product.title }}">
-          <img
-            id="mainImage"
-            src="{{ product.image.url }}"
-            class="img-fluid rounded shadow"
-            alt="{{ product.title }}"
-          />
+          <img id="mainImage" src="{{ product.image.url }}" class="img-fluid rounded shadow" alt="{{ product.title }}" />
         </a>
       </div>
 
@@ -77,6 +72,12 @@
           <button type="submit" class="btn btn-outline-dark">Buy it now</button>
         </div>
       </form>
+
+      <!-- ✅ Product Description Block -->
+      <div class="mt-4 p-4 bg-light rounded shadow-sm">
+        <h5 class="mb-3">Product Description</h5>
+        <p class="mb-0">{{ product.description|linebreaks }}</p>
+      </div>
 
       <!-- Quantity Control Script -->
       <script>
@@ -148,48 +149,47 @@
   <p><a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to write a review.</p>
 {% endif %}
 
-
-
-  <!-- Related Products Section -->
-  {% if related_products %}
-  <div class="mt-5">
-    <h4 class="mb-4">You May Also Like</h4>
-    <div class="row">
-      {% for related in related_products %}
-        <div class="col-md-3 col-6 mb-4">
-          <div class="card h-100 shadow-sm">
-            <img src="{{ related.image.url }}" class="card-img-top" alt="{{ related.title }}">
-            <div class="card-body">
-              <h6 class="card-title">{{ related.title|truncatechars:40 }}</h6>
-              <p class="text-muted mb-1">Rs. {{ related.price }}</p>
-              <a href="{% url 'product_detail' related.id %}" class="btn btn-sm btn-outline-primary">View</a>
-            </div>
+<!-- Related Products Section -->
+{% if related_products %}
+<div class="mt-5">
+  <h4 class="mb-4">You May Also Like</h4>
+  <div class="row">
+    {% for related in related_products %}
+      <div class="col-md-3 col-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ related.image.url }}" class="card-img-top" alt="{{ related.title }}">
+          <div class="card-body">
+            <h6 class="card-title">{{ related.title|truncatechars:40 }}</h6>
+            <p class="text-muted mb-1">Rs. {{ related.price }}</p>
+            <a href="{% url 'product_detail' related.id %}" class="btn btn-sm btn-outline-primary">View</a>
           </div>
         </div>
-      {% endfor %}
-    </div>
+      </div>
+    {% endfor %}
   </div>
-  {% endif %}
-  {% if recently_viewed_products %}
-  <div class="mt-5">
-    <h4 class="mb-4">Recently Viewed</h4>
-    <div class="row">
-      {% for viewed in recently_viewed_products %}
-        <div class="col-md-3 col-6 mb-4">
-          <div class="card h-100 shadow-sm">
-            <img src="{{ viewed.image.url }}" class="card-img-top" alt="{{ viewed.title }}">
-            <div class="card-body">
-              <h6 class="card-title">{{ viewed.title|truncatechars:40 }}</h6>
-              <p class="text-muted mb-1">Rs. {{ viewed.price }}</p>
-              <a href="{% url 'product_detail' viewed.id %}" class="btn btn-sm btn-outline-secondary">View Again</a>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-  </div>
+</div>
 {% endif %}
 
+<!-- Recently Viewed Section -->
+{% if recently_viewed_products %}
+<div class="mt-5">
+  <h4 class="mb-4">Recently Viewed</h4>
+  <div class="row">
+    {% for viewed in recently_viewed_products %}
+      <div class="col-md-3 col-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ viewed.image.url }}" class="card-img-top" alt="{{ viewed.title }}">
+          <div class="card-body">
+            <h6 class="card-title">{{ viewed.title|truncatechars:40 }}</h6>
+            <p class="text-muted mb-1">Rs. {{ viewed.price }}</p>
+            <a href="{% url 'product_detail' viewed.id %}" class="btn btn-sm btn-outline-secondary">View Again</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
 </div>
 
 <!-- JS for Magnify -->
@@ -205,12 +205,7 @@
   function changeImage(img) {
     $('#magnify-container').html(`
       <a href="${img.src}" data-magnify="gallery" data-caption="{{ product.title }}">
-        <img
-          id="mainImage"
-          src="${img.src}"
-          class="img-fluid rounded shadow"
-          alt="{{ product.title }}"
-        />
+        <img id="mainImage" src="${img.src}" class="img-fluid rounded shadow" alt="{{ product.title }}" />
       </a>
     `);
     $('[data-magnify]').magnify();
