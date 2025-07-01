@@ -11,3 +11,11 @@ class CheckoutForm(forms.Form):
     phone = forms.CharField(
         max_length=20, widget=forms.TextInput(attrs={"class": "form-control"})
     )
+    shipping_address = forms.CharField(widget=forms.Textarea)
+    payment_method = forms.ChoiceField(
+        choices=[
+            ("COD", "Cash on Delivery"),
+            ("Card", "Credit/Debit Card"),
+            ("Bank", "Bank Transfer"),
+        ]
+    )

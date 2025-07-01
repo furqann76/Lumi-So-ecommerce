@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            max-width: 700px;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th {
+            background-color: #1f1f1f;
+            color: white;
+            padding: 10px;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+        .product-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .product-info img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .totals {
+            margin-top: 20px;
+        }
+        .totals td {
+            padding: 5px 10px;
+        }
+        .summary {
+            margin-top: 30px;
+        }
+        .summary ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .summary li {
+            margin-bottom: 8px;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #777;
+        }
+        .green {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Thank You for Your Order, {{ customer_name }}!</h2>
+        <p>Your order <strong>#{{ order_number }}</strong> has been successfully placed on <strong>{{ order_date }}</strong>.</p>
+
+        <!-- Product Table -->
+        <h3>📦 Items Ordered:</h3>
+        <table class="items">
+            <thead>
+                <tr>
+                    <th align="left">Product</th>
+                    <th align="center">Qty</th>
+                    <th align="right">Price</th>
+                    <th align="right">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order_items %}
+                <tr>
+                    <td>
+                        <div class="product-info">
+                            <img src="https://lumi.veromenhub.com{{ item.product.image.url }}" alt="{{ item.product.title }}">
+                            <div>
+                                <strong>{{ item.product.title }}</strong><br>
+                                <small>PKR {{ item.product.price|floatformat:2 }}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td align="center">{{ item.quantity }}</td>
+                    <td align="right">Rs. {{ item.product.price|floatformat:2 }}</td>
+                    <td align="right">Rs. {% widthratio item.product.price 1 item.quantity %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" align="right"><strong>Subtotal:</strong></td>
+                    <td align="right">Rs. {{ subtotal|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="right"><strong>Shipping Fee:</strong></td>
+                    <td align="right">Rs. {{ shipping_fee|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="right"><strong>Grand Total:</strong></td>
+                    <td align="right" class="green">Rs. {{ total_amount|floatformat:2 }}</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <!-- Basic Summary -->
+        <div class="summary">
+            <h3>🧾 Order Summary:</h3>
+            <ul>
+                <li><strong>Order Number:</strong> {{ order_number }}</li>
+                <li><strong>Order Date:</strong> {{ order_date }}</li>
+                <li><strong>Payment Method:</strong> {{ payment_method }}</li>
+                <li><strong>Shipping Address:</strong> {{ shipping_address }}</li>
+            </ul>
+        </div>
+
+        <p>📬 You’ll receive another email once your items have shipped.</p>
+        <p>You can track your order anytime by visiting your <a href="{{ order_tracking_link }}">Order Dashboard</a>.</p>
+
+        <div class="footer">
+            <p>If you have any questions, just reply to this email or contact us at <a href="mailto:support@veromenhub.com">support@veromenhub.com</a>.</p>
+            <p>Thank you for choosing Lumi & So – Your Style, Your Story.</p>
+        </div>
+    </div>
+</body>
+</html>

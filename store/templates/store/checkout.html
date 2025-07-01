@@ -1,47 +1,93 @@
 {% extends 'store/base.html' %}
-{% load static %}
+{% load static %}+
+{% load form_tags %}
 {% block title %}Checkout{% endblock %}
 
 {% block content %}
-<div class="container py-5" style="max-width: 600px;">
-  <h2 class="text-center fw-bold mb-4">Checkout</h2>
+<div class="container py-5" style="max-width: 700px;">
+  <h2 class="text-center fw-bold mb-5">Checkout</h2>
 
   {% if cart|length == 0 %}
     <div class="alert alert-info text-center">
-      Your cart is empty. <a href="{% url 'home' %}">Continue shopping</a>
+      Your cart is empty. <a href="{% url 'home' %}" class="alert-link">Continue shopping</a>
     </div>
   {% else %}
-    <form method="post" novalidate>
-      {% csrf_token %}
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <form method="POST" novalidate>
+          {% csrf_token %}
 
-      <div class="mb-3">
-        {{ form.name.label_tag }}
-        {{ form.name }}
-        {% for error in form.name.errors %}
-          <div class="text-danger small">{{ error }}</div>
-        {% endfor %}
-      </div>
+          <!-- Name -->
+          <div class="mb-3">
+            <label class="form-label">{{ form.name.label }}</label>
+            {{ form.name|add_class:"form-control" }}
+            {% for error in form.name.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
 
-      <div class="mb-3">
-        {{ form.address.label_tag }}
-        {{ form.address }}
-        {% for error in form.address.errors %}
-          <div class="text-danger small">{{ error }}</div>
-        {% endfor %}
-      </div>
+          <!-- Address -->
+          <div class="mb-3">
+            <label class="form-label">{{ form.address.label }}</label>
+            {{ form.address|add_class:"form-control" }}
+            {% for error in form.address.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
 
-      <div class="mb-3">
-        {{ form.phone.label_tag }}
-        {{ form.phone }}
-        {% for error in form.phone.errors %}
-          <div class="text-danger small">{{ error }}</div>
-        {% endfor %}
-      </div>
+          <!-- Shipping Address -->
+          <div class="mb-3">
+            <label class="form-label">{{ form.shipping_address.label }}</label>
+            {{ form.shipping_address|add_class:"form-control" }}
+            {% for error in form.shipping_address.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
 
-      <div class="d-grid">
-        <button type="submit" class="btn btn-dark py-2">Confirm Order</button>
+          <!-- Phone -->
+          <div class="mb-3">
+            <label class="form-label">{{ form.phone.label }}</label>
+            {{ form.phone|add_class:"form-control" }}
+            {% for error in form.phone.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <!-- Payment Method -->
+          <div class="mb-3">
+            <label class="form-label">{{ form.payment_method.label }}</label>
+            {{ form.payment_method|add_class:"form-select" }}
+            {% for error in form.payment_method.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <!-- Order Summary -->
+          <div class="border-top pt-3 mt-4">
+            <h5 class="fw-semibold mb-3">Order Summary</h5>
+            <ul class="list-unstyled">
+              <li class="d-flex justify-content-between mb-1">
+                <span>Subtotal:</span>
+                <span>Rs. {{ subtotal }}</span>
+              </li>
+              <li class="d-flex justify-content-between mb-1">
+                <span>Shipping Fee:</span>
+                <span>Rs. {{ shipping_fee }}</span>
+              </li>
+              <li class="d-flex justify-content-between fw-bold border-top pt-2 mt-2">
+                <span>Total:</span>
+                <span>Rs. {{ total_amount }}</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-dark btn-lg">Place Order</button>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   {% endif %}
 </div>
 {% endblock %}
