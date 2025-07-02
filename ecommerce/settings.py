@@ -57,8 +57,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "store.middleware.AbandonedCartMiddleware",
 ]
-MIDDLEWARE.insert(0, "store.middleware.AbandonedCartMiddleware")
 
 
 ROOT_URLCONF = "ecommerce.urls"
