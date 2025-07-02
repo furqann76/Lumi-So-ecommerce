@@ -1,6 +1,6 @@
 # Lumi&So
 
-Lumi&So is a modern, scalable Django-based ecommerce platform designed for fashion and lifestyle brands. It features a clean, responsive UI, robust product catalog, advanced filtering, user authentication, wishlist, cart, order management, and email notifications (including cart recovery). The project is organized for maintainability and growth, using a modular directory structure.
+Lumi&So is a modern, scalable Django-based ecommerce platform designed for fashion and lifestyle brands. It features a clean, responsive UI, robust product catalog, advanced filtering, user authentication, wishlist, cart, order management, AI-powered tools, and email notifications (including cart recovery). The project is organized for maintainability and growth, using a modular directory structure.
 
 ---
 
@@ -13,9 +13,24 @@ Lumi&So is a modern, scalable Django-based ecommerce platform designed for fashi
 - **Wishlist:** Save favorite products for later.
 - **Order Management:** Secure checkout, order history, and order success pages.
 - **Cart Recovery Emails:** Automated emails to remind users about abandoned carts.
+- **AI Tools:** Product description generation and chatbot support.
 - **Responsive Design:** Built with Bootstrap 5 for mobile and desktop.
 - **Scalable Codebase:** Modular structure for models, views, and forms.
 - **Admin Panel:** Manage products, categories, orders, and users via Django admin.
+
+---
+
+## AI Tools
+
+Lumi&So integrates AI-powered features to enhance both admin and customer experience:
+
+- **AI Product Description Generator:**  
+  In the Django admin, generate engaging product descriptions with a single click using integrated AI (LLaMA or OpenAI backend).
+- **Chatbot Support:(RAG)**  
+  A chatbot widget is available on the storefront, answering customer queries using AI.
+- **How it works:**  
+  - The backend exposes endpoints (e.g., `/generate-description/`, `/ask/`) that interact with your AI service.
+  - You can run your own AI microservice (Flask/FastAPI) or connect to OpenAI, LLaMA, or similar APIs.
 
 ---
 
@@ -104,10 +119,33 @@ python manage.py createsuperuser
 
 # 6. Run the Development Server
 python manage.py runserver
+
+# 7(optional). If you want to use llama for AI description generator
+curl -fsSL https://ollama.com/install.sh | sh
+ollama pull llama3
+ollama run llama3
 ```
 
 - Access the site at [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 - Access the admin panel at [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
+
+---
+
+## Running Background Services
+
+Lumi&So uses Celery and Redis for background tasks (e.g., sending cart recovery emails, AI requests):
+
+```bash
+# Start Redis server (if not already running)
+sudo systemctl start redis-server
+
+# Start Celery worker (in your project directory)
+celery -A ecommerce worker --loglevel=info
+
+# (Optional) Start Celery beat for scheduled tasks
+celery -A ecommerce beat --loglevel=info
+
+```
 
 ---
 
@@ -117,6 +155,7 @@ python manage.py runserver
 - **Products & Categories:** Use the Django admin panel to add/edit products, categories, and subcategories.
 - **Context Processors:** Use `context_processors.py` to inject global data (like categories and cart) into all templates.
 - **Cart Recovery Emails:** Customize the email template at `store/templates/store/emails/cart_recovery.html`.
+- **AI Endpoints:** Adjust `/generate-description/` and `/ask/` endpoints to connect to your preferred AI backend.
 - **Modular Code:** Add new features by creating new modules in `models/`, `views/`, and `forms/`.
 
 ---
@@ -137,4 +176,4 @@ This project is licensed under the MIT License.
 
 ---
 
-**Lumi&So — Modern Ecommerce, Beautifully Crafted with Django**
+**Lumi&So — Modern Ecommerce, Beautifully Crafted with Django and AI**
