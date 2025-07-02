@@ -70,3 +70,10 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.product.title} ({self.rating})"
+
+
+def apply_competitor_price(self, competitor_price):
+    # Set price 5% cheaper, but not below your base price
+    new_price = max(competitor_price * 0.95, self.base_price)
+    self.final_price = round(new_price, 2)
+    self.save()
