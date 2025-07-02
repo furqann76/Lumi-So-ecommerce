@@ -1,6 +1,6 @@
 # Lumi&So
 
-Lumi&So is a modern, scalable Django-based ecommerce platform designed for fashion and lifestyle brands. It features a clean, responsive UI, robust product catalog, advanced filtering, user authentication, wishlist, cart, and order management. The project is organized for maintainability and growth, using a modular directory structure.
+Lumi&So is a modern, scalable Django-based ecommerce platform designed for fashion and lifestyle brands. It features a clean, responsive UI, robust product catalog, advanced filtering, user authentication, wishlist, cart, order management, and email notifications (including cart recovery). The project is organized for maintainability and growth, using a modular directory structure.
 
 ---
 
@@ -12,6 +12,7 @@ Lumi&So is a modern, scalable Django-based ecommerce platform designed for fashi
 - **Shopping Cart:** Add, remove, and update product quantities; persistent cart per user/session.
 - **Wishlist:** Save favorite products for later.
 - **Order Management:** Secure checkout, order history, and order success pages.
+- **Cart Recovery Emails:** Automated emails to remind users about abandoned carts.
 - **Responsive Design:** Built with Bootstrap 5 for mobile and desktop.
 - **Scalable Codebase:** Modular structure for models, views, and forms.
 - **Admin Panel:** Manage products, categories, orders, and users via Django admin.
@@ -63,9 +64,14 @@ lumiandso/
 │   │       ├── register.html
 │   │       ├── login.html
 │   │       ├── order_success.html
+│   │       ├── emails/
+│   │       │   └── cart_recovery.html
 │   │       └── partials/
 │   │           └── breadcrumb.html
 │   ├── static/
+│   │   └── store/
+│   │       ├── style.css
+│   │       └── ...
 │   ├── urls.py
 │   └── ...
 ├── static/
@@ -78,55 +84,39 @@ lumiandso/
 
 ## Setup Instructions
 
-### 1. Clone the Repository
-
 ```bash
+# 1. Clone the Repository
 git clone https://github.com/furqann76/Lumi-So-ecommerce.git
 cd Lumi-So-ecommerce
-```
 
-### 2. Create and Activate a Virtual Environment
-
-```bash
+# 2. Create and Activate a Virtual Environment
 python3 -m venv venv
 source venv/bin/activate
-```
 
-### 3. Install Dependencies
-
-```bash
+# 3. Install Dependencies
 pip install -r requirements.txt
-```
 
-### 4. Apply Migrations
-
-```bash
+# 4. Apply Migrations
 python manage.py migrate
-```
 
-### 5. Create a Superuser
-
-```bash
+# 5. Create a Superuser
 python manage.py createsuperuser
-```
 
-### 6. Run the Development Server
-
-```bash
+# 6. Run the Development Server
 python manage.py runserver
 ```
 
-### 7. Access the Site
-
-- Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser.
+- Access the site at [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+- Access the admin panel at [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
 
 ---
 
 ## Customization
 
-- **Branding:** Update `base.html` and static files for your brand’s look and feel.
+- **Branding:** Update `base.html` and static files (like `static/store/style.css`) for your brand’s look and feel.
 - **Products & Categories:** Use the Django admin panel to add/edit products, categories, and subcategories.
 - **Context Processors:** Use `context_processors.py` to inject global data (like categories and cart) into all templates.
+- **Cart Recovery Emails:** Customize the email template at `store/templates/store/emails/cart_recovery.html`.
 - **Modular Code:** Add new features by creating new modules in `models/`, `views/`, and `forms/`.
 
 ---
