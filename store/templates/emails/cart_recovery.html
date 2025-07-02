@@ -1,0 +1,8 @@
+<h2>Hey {{ customer_name }},</h2>
+<p>We noticed you left some items in your cart.</p>
+<ul>
+    {% for pid, item in cart_data.items %}
+        <li>{{ item.name }} - Qty: {{ item.quantity }} - Rs. {{ item.price }}</li>
+    {% endfor %}
+</ul>
+<p><a href="https://lumi.veromenhub.com/cart/">🛍️ Resume your checkout</a></p>

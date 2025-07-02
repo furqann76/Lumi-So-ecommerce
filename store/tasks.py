@@ -2,6 +2,10 @@ from celery import shared_task
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from store.models import Order
+from django.utils import timezone
+from datetime import timedelta
+from .models.abandoned_cart import AbandonedCart
+from django.core.mail import send_mail
 
 
 @shared_task
@@ -36,3 +40,24 @@ def send_order_confirmation_email(email, order_id):
 
     except Order.DoesNotExist:
         print(f"Order with ID {order_id} does not exist.")
+
+
+@shared_task
+def send_cart_recovery_emails():
+    threshold = timezone.now() - timedelta(minutes=4)
+    carts = AbandonedCart.objects.filter(emailed=False, created_at__lte=threshold)
+
+    for cart in carts:
+        subject = "You left items in your cart"
+        message = render_to_string(
+            "emails/cart_recovery.html",
+            {
+                "customer_name": cart.user.first_name or cart.user.username,
+                "cart_data": cart.cart_data,
+            },
+        )
+        send_mail(
+            subject, "", "yourshop@example.com", [cart.user.email], html_message=message
+        )
+        cart.emailed = True
+        cart.save()
