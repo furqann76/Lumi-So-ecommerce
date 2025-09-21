@@ -3,3 +3,5 @@ e-commerce/
 db.sqlite3
 .env
 lumienv/
+__pycache__/
+*.pyc

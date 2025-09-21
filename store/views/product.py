@@ -1,13 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from ..models import Product, SubCategory
-from ..utils import get_ai_related_products
+
+# from ..utils import get_ai_related_products
 from ..models import Product
 from ..forms import ReviewForm
 from django.contrib import messages
 from ..models.product import Review
 from django.db.models import Q
 from django.core.paginator import Paginator
-from textblob import TextBlob
+# from textblob import TextBlob
 
 
 def search_products(request):
@@ -76,8 +77,10 @@ def subcategory_products(request, subcategory_id):
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
-    related_products = get_ai_related_products(product)
-    reviews = product.reviews.all().order_by("-created_at")
+    related_product = ""
+    reviews = ""
+    """related_products = get_ai_related_products(product)
+    reviews = product.reviews.all().order_by("-created_at")"""
     review_form = ReviewForm()
 
     # -------------------------------
@@ -105,7 +108,7 @@ def product_detail(request, product_id):
             review.user = request.user
 
             # --- Sentiment Analysis ---
-            comment_text = review.comment
+            """comment_text = review.comment
             analysis = TextBlob(comment_text)
             polarity = analysis.sentiment.polarity
 
@@ -119,14 +122,14 @@ def product_detail(request, product_id):
 
             review.save()
             messages.success(request, "Your review has been submitted.")
-            return redirect("product_detail", product_id=product_id)
+            return redirect("product_detail", product_id=product_id)"""
 
     return render(
         request,
         "store/product_detail.html",
         {
             "product": product,
-            "related_products": related_products,
+            "related_products": "",
             "reviews": reviews,
             "review_form": review_form,
             "recently_viewed_products": recently_viewed_products,

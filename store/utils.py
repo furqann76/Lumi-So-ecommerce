@@ -1,4 +1,4 @@
-from sklearn.feature_extraction.text import TfidfVectorizer
+"""from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from .models import Product
 import numpy as np
@@ -50,3 +50,4 @@ def generate_product_description(title):
 
     except Exception as e:
         return f"Error generating description: {str(e)}"
+"""
