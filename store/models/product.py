@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 from .category import SubCategory
 from django.contrib.auth.models import User
@@ -39,6 +40,17 @@ class Product(models.Model):
     def is_in_stock(self):
         return self.stock > 0
 
+    def apply_competitor_price(self, competitor_price):
+        """Undercut a competitor's price by 5% and store it as sale_price
+        (the discounted price shown to customers via get_display_price()).
+        Only applied when it's an actual discount off our own price;
+        otherwise any existing sale is cleared since the competitor no
+        longer justifies one."""
+        competitor_price = Decimal(str(competitor_price))
+        undercut_price = (competitor_price * Decimal("0.95")).quantize(Decimal("0.01"))
+        self.sale_price = undercut_price if undercut_price < self.price else None
+        self.save()
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(
@@ -70,10 +82,3 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.product.title} ({self.rating})"
-
-
-def apply_competitor_price(self, competitor_price):
-    # Set price 5% cheaper, but not below your base price
-    new_price = max(competitor_price * 0.95, self.base_price)
-    self.final_price = round(new_price, 2)
-    self.save()
