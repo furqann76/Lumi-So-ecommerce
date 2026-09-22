@@ -1,4 +1,26 @@
-e-commerce/
-.vscode/
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Django
 db.sqlite3
+db.sqlite3-journal
+staticfiles/
+celerybeat-schedule
+celerybeat.pid
+
+# Environment variables
 .env
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+
+e-commerce/
