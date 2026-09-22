@@ -33,34 +33,90 @@ body {
 }
 
 .hero {
-    background: url('/static/store/AdobeStock_314970095_Preview.jpeg') no-repeat center center/cover;
-    min-height: 90vh;
-    color: rgb(0, 0, 0);
-    position: relative;
+    overflow: hidden;
+    background-color: #0b1d33;
 }
 
-.hero-overlay {
-    background-color: rgba(0, 0, 0, 0.55);
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+.hero-row {
+    min-height: 70vh;
 }
 
-.hero-content {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    padding-top: 30vh;
+.hero-text {
+    padding: 4rem 5vw;
+    background: linear-gradient(135deg, #12233d, #0b1d33 70%);
+    color: #ffffff;
+}
+
+.hero-eyebrow {
+    letter-spacing: 3px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #7ecbff;
+    margin-bottom: 0.5rem;
 }
 
 .hero-content h1 {
-    font-size: 3rem;
-    font-weight: bold;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1rem;
 }
 
-.hero-content p {
-    font-size: 1.2rem;
-    color: #ccc;
+.hero-sub {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 420px;
+    margin-bottom: 2rem;
+}
+
+.hero-cta {
+    background-color: #ffffff;
+    color: #0b1d33;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 999px;
+    border: none;
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.hero-cta:hover {
+    background-color: #e63946;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.hero-image-col {
+    position: relative;
+    min-height: 40vh;
+    background-color: #17335c;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+}
+
+@media (max-width: 991.98px) {
+    .hero-row {
+        min-height: auto;
+    }
+
+    .hero-text {
+        padding: 3rem 6vw;
+        text-align: center;
+    }
+
+    .hero-sub {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-image-col {
+        min-height: 50vh;
+    }
 }
 
 .products {

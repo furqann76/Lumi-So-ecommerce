@@ -1,21 +1,30 @@
 {% extends 'store/base.html' %}
+{% load static %}
 
 {% block title %}
   Home - Lumi & So
 {% endblock %}
 
 {% block hero %}
-  <div class="hero position-relative">
-    <div class="hero-overlay"></div>
-    <div class="hero-content container">
-      <p>#SS25 COLLECTION</p>
-      <h1>LEGACY LANE <span class="text-danger">VOL-03</span></h1>
+  <section class="hero">
+    <div class="row g-0 hero-row">
+      <div class="col-lg-6 hero-text d-flex align-items-center">
+        <div class="hero-content">
+          <p class="hero-eyebrow">#SS25 COLLECTION</p>
+          <h1>LEGACY LANE <span class="text-danger">VOL-03</span></h1>
+          <p class="hero-sub">Elevated essentials, cut for the everyday — new drops styled for the season ahead.</p>
+          <a href="#shop" class="btn hero-cta">Shop the Collection</a>
+        </div>
+      </div>
+      <div class="col-lg-6 hero-image-col">
+        <img src="{% static 'store/hero-model.webp' %}" alt="Lumi & So SS25 collection" class="hero-image">
+      </div>
     </div>
-  </div>
+  </section>
 {% endblock %}
 
 {% block content %}
-  <h2 class="mb-4">All Products</h2>
+  <h2 id="shop" class="mb-4">All Products</h2>
   <div class="row">
     {% for product in products %}
       <div class="col-md-3 mb-4">
