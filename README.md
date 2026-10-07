@@ -177,3 +177,19 @@ This project is licensed under the MIT License.
 ---
 
 **Lumi&So — Modern Ecommerce, Beautifully Crafted with Django and AI**
+---
+
+## Environment variables
+
+`settings.py` reads email credentials with `python-decouple`, so the server will not start without a `.env` file. Copy the template and fill it in:
+
+```bash
+cp .env.example .env
+```
+
+| Variable | Purpose |
+|---|---|
+| `EMAIL_HOST_USER` | SMTP account used for order confirmation and cart recovery emails |
+| `EMAIL_HOST_PASSWORD` | Password or app password for that account |
+
+Celery uses Redis at `redis://localhost:6379/0`; start Redis before running the worker and beat processes.
